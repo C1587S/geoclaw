@@ -196,12 +196,14 @@ contains
             read(unit, *) t_ramp_off
             read(unit, *)
 
-            ! AMR parameters
+            ! AMR parameters (SurgeData.write emits a second blank record before them)
+            read(unit, *)
             read(unit,'(a)') line
             allocate(wind_refine(get_value_count(line)))
+            read(line,*) (wind_refine(i),i=1,size(wind_refine,1))
             read(unit,'(a)') line
             allocate(R_refine(get_value_count(line)))
-            read(unit, *)
+            read(line,*) (R_refine(i),i=1,size(R_refine,1))
 
             ! Met-forcing selection: explicit family + subtype tokens (written
             ! by SurgeData.write in src/python/geoclaw/data.py).  The subtype
